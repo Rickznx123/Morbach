@@ -1,0 +1,846 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Morbach Life</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: loja de marca única — barra de avisos, hero com produto, objetivos, vitrine, kit, ciência, selos, FAQ. Tema claro fixo da identidade. */
+:root{
+  --verde:#56AD95; --verde-esc:#2D5D52; --verde-prof:#1C4F48; --creme:#F7F6F2; --creme-logo:#F6F3EE;
+  --cinza:#6F7775; --preto:#232323; --linha:#DCE3E0; --branco:#FFFFFF; --verde-claro:#E4F1EC;
+  --ff-tit:"Montserrat","Gotham","Helvetica Neue",Arial,sans-serif;
+  --ff-txt:"Manrope","Segoe UI",Roboto,Arial,sans-serif;
+  --r:10px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--creme);color:var(--preto);font-family:var(--ff-txt);font-size:16px;line-height:1.6}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--ff-tit);font-weight:600;line-height:1.15;margin:0;text-wrap:balance;letter-spacing:-.01em}
+p{margin:0}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--verde);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font-family:var(--ff-tit);font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--verde-esc)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:14px 26px;font-family:var(--ff-tit);font-weight:600;font-size:14px;letter-spacing:.04em;text-decoration:none;transition:background .2s,transform .2s}
+.btn-pri{background:var(--verde-esc);color:var(--branco)}
+.btn-pri:hover{background:var(--verde-prof)}
+.btn-sec{background:transparent;color:var(--verde-esc);box-shadow:inset 0 0 0 1.5px var(--verde-esc)}
+.btn-sec:hover{background:var(--verde-claro)}
+section{padding-block:72px}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:32px}
+.sec-head h2{font-size:clamp(26px,3.4vw,38px);margin-top:8px}
+
+/* aviso */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--creme-logo)}
+.aviso{background:var(--verde-prof);color:var(--creme);font-size:13px;font-weight:500}
+.aviso .wrap{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:6px 12px;min-height:38px;text-align:center}
+.aviso b{color:var(--verde);font-family:var(--ff-tit);font-weight:700;letter-spacing:.06em}
+.cd{display:inline-flex;align-items:center;gap:2px;font-variant-numeric:tabular-nums;font-weight:700}
+.cd i{font-style:normal;background:var(--preto);color:var(--branco);border-radius:4px;min-width:20px;padding:1px 4px;line-height:1.5}
+.cd em{font-style:normal;padding:0 1px}
+.aviso-link{font-weight:700;text-underline-offset:3px}
+@media (max-width:640px){.aviso-txt,.aviso-link{display:none}}
+
+/* banners */
+.banners{--w:min(88%,1680px);padding-block:24px 0}
+.ban-vp{position:relative;overflow:hidden;touch-action:pan-y}
+.ban-trilho{display:flex;gap:16px;transform:translateX(calc((100% - var(--w)) / 2 - var(--i,1) * (var(--w) + 16px)));transition:transform .6s cubic-bezier(.22,.61,.36,1),opacity .3s}
+.ban-trilho.sem-anim{transition:opacity .3s}
+@media (prefers-reduced-motion:reduce){.ban-trilho{transition:opacity .3s!important}}
+.slide{flex:0 0 var(--w);aspect-ratio:1680/638;position:relative;border-radius:24px;overflow:hidden;background:linear-gradient(135deg,var(--verde-prof),var(--verde-esc))}
+.slide a{display:block;height:100%;text-decoration:none}
+.slide img{width:100%;height:100%;object-fit:cover}
+.slide .ph{display:none;position:absolute;inset:0;place-items:center;padding:24px;text-align:center;font-family:var(--ff-tit);font-weight:600;font-size:clamp(22px,3vw,40px);line-height:1.15;color:var(--creme)}
+.slide.sem picture{display:none}
+.slide.sem .ph{display:grid}
+.ban-ui{position:absolute;inset:0;width:var(--w);margin-inline:auto;pointer-events:none}
+.ban-setas{position:absolute;right:16px;bottom:16px;display:flex;gap:8px;pointer-events:auto}
+.ban-setas button{width:40px;height:40px;padding:0;border:0;border-radius:50%;background:var(--branco);color:var(--preto);display:grid;place-items:center;box-shadow:0 4px 12px rgba(0,0,0,.16)}
+.ban-setas svg{width:18px;height:18px}
+.ban-faixa{position:absolute;left:16px;bottom:20px;display:flex;gap:18px;font-size:12px;font-weight:600;color:var(--branco);background:rgba(0,0,0,.28);padding:7px 14px;border-radius:999px}
+.ban-faixa span{display:flex;align-items:center;gap:6px}
+.ban-faixa svg{width:16px;height:16px}
+.ban-dots{display:flex;justify-content:center;gap:8px;margin-top:16px}
+.ban-dots button{width:8px;height:8px;padding:0;border:0;border-radius:999px;background:var(--linha);transition:width .3s,background .3s}
+.ban-dots button[aria-current=true]{width:24px;background:var(--verde-esc)}
+@media (max-width:640px){.banners{--w:92%}.slide{aspect-ratio:4/5}.ban-faixa{display:none}}
+
+/* header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--creme-logo);border-bottom:1px solid var(--linha)}
+header .wrap{display:flex;align-items:center;gap:24px;min-height:76px}
+.logo img{height:46px;width:auto}
+nav.menu{display:flex;gap:26px;margin-left:auto;font-family:var(--ff-tit);font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+nav.menu a{text-decoration:none;color:var(--preto);padding-block:6px;border-bottom:2px solid transparent}
+nav.menu a:hover{border-color:var(--verde)}
+.acoes{display:flex;gap:10px;align-items:center}
+.ico-btn{position:relative;display:inline-flex;align-items:center;gap:8px;border:0;background:var(--branco);color:var(--verde-esc);border-radius:999px;padding:10px 16px;font-family:var(--ff-tit);font-weight:600;font-size:13px;box-shadow:inset 0 0 0 1px var(--linha)}
+.ico-btn svg{width:18px;height:18px}
+.badge{min-width:20px;height:20px;border-radius:10px;background:var(--verde);color:var(--branco);font-size:11px;display:inline-grid;place-items:center;padding:0 6px}
+@media (max-width:900px){nav.menu{display:none}.acoes{margin-left:auto}.ico-btn .txt{display:none}.logo img{height:38px}}
+
+/* hero */
+.hero{padding-block:48px 64px;background:linear-gradient(180deg,var(--creme-logo) 0%,var(--creme) 100%)}
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center}
+.hero h1{font-size:clamp(34px,5vw,58px);font-weight:600;margin-block:14px 18px}
+.hero h1 em{font-style:normal;color:var(--verde)}
+.hero .lead{font-size:18px;color:var(--cinza);max-width:46ch}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.hero-foto{border-radius:18px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(28,79,72,.45);align-self:center}
+.hero-foto img{width:100%;height:auto;display:block}
+.hero-foto{background:#FEFEFE}
+.lema{display:flex;gap:22px;flex-wrap:wrap;margin-top:34px;font-family:var(--ff-tit);font-size:12px;font-weight:600;letter-spacing:.2em;color:var(--verde-esc)}
+.lema span{display:flex;align-items:center;gap:22px}
+.lema span+span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--verde)}
+@media (max-width:860px){.hero .wrap{grid-template-columns:1fr;gap:32px}.hero-foto{order:-1}}
+
+/* beneficios compra */
+.vantagens{background:var(--branco);border-block:1px solid var(--linha);padding-block:0}
+.vantagens .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+.vant{display:flex;gap:14px;align-items:center;padding:22px 18px;border-left:1px solid var(--linha)}
+.vant:first-child{border-left:0}
+.vant svg{flex:none;width:30px;height:30px;color:var(--verde)}
+.vant b{display:block;font-family:var(--ff-tit);font-size:14px;font-weight:600}
+.vant small{color:var(--cinza);font-size:13px}
+@media (max-width:860px){.vantagens .wrap{grid-template-columns:1fr 1fr}.vant:nth-child(3){border-left:0}.vant:nth-child(n+3){border-top:1px solid var(--linha)}}
+@media (max-width:440px){.vant{padding:16px 10px;gap:10px}.vant svg{width:24px;height:24px}}
+
+/* objetivos */
+.objetivos{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.obj{border:0;text-align:left;background:var(--branco);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:12px;box-shadow:inset 0 0 0 1px var(--linha);transition:box-shadow .2s,background .2s;color:var(--preto)}
+.obj:hover{box-shadow:inset 0 0 0 1.5px var(--verde)}
+.obj[aria-pressed="true"]{background:var(--verde-esc);color:var(--creme);box-shadow:none}
+.obj[aria-pressed="true"] small{color:#C9DDD6}
+.obj svg{width:30px;height:30px;color:var(--verde)}
+.obj b{font-family:var(--ff-tit);font-weight:600;font-size:16px}
+.obj small{color:var(--cinza);font-size:13px;line-height:1.4}
+@media (max-width:860px){.objetivos{grid-template-columns:1fr 1fr}}
+
+/* vitrine */
+.vitrine{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:36px}
+.card{background:var(--branco);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:inset 0 0 0 1px var(--linha);transition:opacity .3s,transform .3s}
+.card.apagado{opacity:.35}
+.card-img{position:relative;aspect-ratio:4/4.4;background:#FEFEFE;overflow:hidden}
+.card:not(.kit) .card-img img{object-fit:contain;padding:22px 0 10px}
+.card-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.card:hover .card-img img{transform:scale(1.04)}
+.selo{position:absolute;top:14px;left:14px;background:var(--verde);color:var(--branco);font-family:var(--ff-tit);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:6px 10px;border-radius:999px}
+.selo.esc{background:var(--verde-prof)}
+.card-body{padding:22px;display:flex;flex-direction:column;gap:10px;flex:1}
+.card-body h3{font-size:22px}
+.card-body .formula{font-size:14px;color:var(--verde-esc);font-weight:600}
+.card-body .desc{font-size:14px;color:var(--cinza)}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:12px;background:var(--verde-claro);color:var(--verde-esc);padding:3px 10px;border-radius:999px;font-weight:600}
+.preco{margin-top:auto;padding-top:10px;font-variant-numeric:tabular-nums}
+.preco s{color:var(--cinza);font-size:14px}
+.preco .por{font-family:var(--ff-tit);font-size:26px;font-weight:700;color:var(--preto);display:flex;align-items:center;gap:10px}
+.off{font-size:12px;background:var(--verde);color:var(--branco);padding:2px 8px;border-radius:6px}
+.preco small{display:block;color:var(--cinza);font-size:13px}
+.preco .pix{color:var(--verde-esc);font-weight:600}
+.qtd-row{display:flex;gap:10px;margin-top:6px}
+.qtd{display:flex;align-items:center;border-radius:999px;box-shadow:inset 0 0 0 1px var(--linha)}
+.qtd button{border:0;background:none;width:38px;height:46px;font-size:18px;color:var(--verde-esc)}
+.qtd output{min-width:22px;text-align:center;font-weight:700}
+.qtd-row .btn{flex:1;padding:12px 16px}
+.link-det{font-size:13px;color:var(--verde-esc);font-weight:600;text-underline-offset:3px}
+@media (max-width:960px){.vitrine{grid-template-columns:1fr 1fr}.card.kit{grid-column:1/-1}}
+@media (max-width:620px){.vitrine{grid-template-columns:1fr}}
+
+.kit .card-img{background:var(--verde-esc)}
+.kit-badge{position:absolute;right:14px;bottom:14px;background:var(--creme);color:var(--verde-esc);font-family:var(--ff-tit);font-weight:700;border-radius:999px;padding:8px 14px;font-size:13px}
+
+/* detalhe produto */
+.detalhe{background:var(--branco)}
+.tabs{display:inline-flex;background:var(--creme);border-radius:999px;padding:5px;gap:4px;margin-bottom:36px;flex-wrap:wrap}
+.tabs button{border:0;background:none;border-radius:999px;padding:10px 22px;font-family:var(--ff-tit);font-weight:600;font-size:14px;color:var(--cinza)}
+.tabs button[aria-selected="true"]{background:var(--verde-esc);color:var(--branco)}
+.det-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:start}
+.det-foto{border-radius:16px;overflow:hidden;background:#FEFEFE;box-shadow:inset 0 0 0 1px var(--linha)}
+.det-foto img{width:100%;height:auto;aspect-ratio:2/3;object-fit:contain}
+.det-info{min-width:0}
+.det-info h3{font-size:clamp(28px,3.4vw,40px);margin-block:6px 12px}
+.det-info>p{color:var(--cinza);max-width:58ch}
+.ativos{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:26px}
+.ativo{padding:16px 18px;border-radius:var(--r);background:var(--creme)}
+.ativo b{font-family:var(--ff-tit);font-weight:600;display:block;font-size:15px;color:var(--verde-esc)}
+.ativo span{font-size:14px;color:var(--cinza)}
+.det-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:26px;border-top:1px solid var(--linha)}
+.det-meta div{padding:16px 12px 0 0}
+.det-meta small{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cinza);font-weight:600}
+.det-meta b{font-family:var(--ff-tit);font-weight:600;font-size:15px}
+.aviso-legal{margin-top:22px;font-size:12px;color:var(--cinza);border-left:2px solid var(--verde);padding-left:12px}
+@media (max-width:860px){.det-grid{grid-template-columns:1fr;gap:28px}.det-foto{max-width:420px}}
+@media (max-width:480px){.ativos{grid-template-columns:1fr}.det-meta{grid-template-columns:1fr 1fr}}
+
+/* ciencia */
+.ciencia{background:var(--verde-prof);color:var(--creme)}
+.ciencia .eyebrow{color:var(--verde)}
+.ciencia-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.ciencia h2{font-size:clamp(28px,3.6vw,42px);margin-block:10px 18px}
+.ciencia p{color:#C9DDD6;max-width:52ch}
+.equacao{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;background:rgba(255,255,255,.04);border:1px solid rgba(86,173,149,.3);border-radius:16px;padding:36px 20px}
+.equacao .el{display:flex;flex-direction:column;align-items:center;gap:10px;font-family:var(--ff-tit);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#C9DDD6}
+.equacao .el svg{width:52px;height:52px;color:var(--verde)}
+.equacao .op{font-family:var(--ff-tit);font-size:26px;color:var(--verde)}
+.pilares{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:56px;border-top:1px solid rgba(201,221,214,.2)}
+.pilar{padding:24px 18px 0 0;display:flex;gap:12px;align-items:flex-start}
+.pilar svg{flex:none;width:26px;height:26px;color:var(--verde)}
+.pilar b{font-family:var(--ff-tit);font-weight:600;font-size:14px;letter-spacing:.06em;text-transform:uppercase;line-height:1.35}
+@media (max-width:860px){.ciencia-grid{grid-template-columns:1fr;gap:32px}.pilares{grid-template-columns:1fr 1fr;row-gap:20px}}
+
+/* garantia */
+.garantias{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.gar{padding:24px;border-radius:var(--r);background:var(--branco);box-shadow:inset 0 0 0 1px var(--linha)}
+.gar svg{width:28px;height:28px;color:var(--verde-esc);margin-bottom:14px}
+.gar b{display:block;font-family:var(--ff-tit);font-weight:600;margin-bottom:6px}
+.gar p{font-size:14px;color:var(--cinza)}
+@media (max-width:860px){.garantias{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.garantias{grid-template-columns:1fr}}
+
+.fabrica{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:16px;overflow:hidden;margin-top:40px;background:var(--verde-esc);color:var(--creme)}
+.fabrica img{width:100%;height:100%;object-fit:cover;min-height:240px}
+.fabrica-txt{padding:40px;display:flex;flex-direction:column;justify-content:center;gap:16px}
+.fabrica-txt h3{font-size:28px}
+.fabrica-txt ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;font-size:15px}
+.fabrica-txt li{display:flex;gap:8px;align-items:center}
+.fabrica-txt li::before{content:"";width:16px;height:16px;flex:none;border-radius:50%;background:var(--verde) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.2 2.2 4.8-4.8' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") center/16px}
+.fabrica .btn{align-self:flex-start;background:var(--creme);color:var(--verde-esc)}
+@media (max-width:760px){.fabrica{grid-template-columns:1fr}.fabrica-txt{padding:28px 22px}}
+
+/* faq */
+.faq-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px}
+.faq-grid>div{min-width:0}
+details{border-bottom:1px solid var(--linha)}
+summary{list-style:none;cursor:pointer;padding:20px 0;font-family:var(--ff-tit);font-weight:600;font-size:16px;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:22px;line-height:1;color:var(--verde)}
+details[open] summary::after{content:"–"}
+details p{padding-bottom:20px;color:var(--cinza);max-width:62ch}
+.atend{margin-top:22px;padding:22px;border-radius:var(--r);background:var(--verde-claro)}
+.atend b{font-family:var(--ff-tit);display:block;margin-bottom:6px}
+.atend p{font-size:14px;color:var(--verde-esc);margin-bottom:14px}
+@media (max-width:860px){.faq-grid{grid-template-columns:1fr;gap:24px}}
+
+/* newsletter */
+.news{background:var(--verde);color:var(--verde-prof);padding-block:48px}
+.news .wrap{display:flex;gap:28px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.news h3{font-size:clamp(22px,2.6vw,30px);color:var(--verde-prof)}
+.news p{color:var(--verde-prof);font-weight:500}
+.news form{display:flex;gap:10px;flex:1;max-width:480px;min-width:260px;flex-wrap:wrap}
+.news input{flex:1;min-width:0;border:0;border-radius:999px;padding:14px 20px;font:inherit;background:var(--creme);color:var(--preto)}
+.news .btn{background:var(--verde-prof);color:var(--creme)}
+.news .ok{font-weight:700;width:100%}
+
+/* footer */
+footer{background:var(--verde-prof);color:#C9DDD6;padding-block:56px 28px;font-size:14px}
+.foot-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px}
+.foot-grid h4{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--creme);margin-bottom:14px}
+.foot-grid ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.foot-grid a{text-decoration:none}
+.foot-grid a:hover{color:var(--creme)}
+.foot-logo{width:200px}
+.foot-base{margin-top:40px;padding-top:20px;border-top:1px solid rgba(201,221,214,.2);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12px}
+.pagto{display:flex;gap:6px;flex-wrap:wrap}
+.pagto span{border:1px solid rgba(201,221,214,.3);border-radius:6px;padding:3px 9px;font-size:11px;font-weight:600;letter-spacing:.06em}
+@media (max-width:860px){.foot-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.foot-grid{grid-template-columns:1fr}}
+
+/* carrinho */
+.wpp{position:fixed;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:40;width:56px;height:56px;border-radius:50%;background:#25D366;color:#fff;display:grid;place-items:center;box-shadow:0 10px 24px -8px rgba(0,0,0,.4);text-decoration:none}
+.wpp svg{width:28px;height:28px}
+.veu{position:fixed;inset:0;background:rgba(28,40,38,.45);z-index:70;opacity:0;pointer-events:none;transition:opacity .25s}
+.veu.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:var(--creme);z-index:80;transform:translateX(100%);transition:transform .3s;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-right:env(safe-area-inset-right,0px)}
+.drawer.on{transform:none}
+.dr-head{display:flex;justify-content:space-between;align-items:center;padding:20px 22px;border-bottom:1px solid var(--linha)}
+.dr-head h3{font-size:18px}
+.fechar{border:0;background:none;font-size:26px;line-height:1;color:var(--cinza)}
+.frete{padding:16px 22px;background:var(--branco);border-bottom:1px solid var(--linha);font-size:13px}
+.barra{height:6px;background:var(--linha);border-radius:3px;margin-top:8px;overflow:hidden}
+.barra i{display:block;height:100%;background:var(--verde);width:0;transition:width .4s}
+.itens{flex:1;overflow:auto;padding:12px 22px;display:grid;align-content:start;gap:12px}
+.item{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;background:var(--branco);padding:10px;border-radius:var(--r)}
+.item img{width:64px;height:70px;object-fit:contain;border-radius:6px;background:#FEFEFE}
+.item b{font-family:var(--ff-tit);font-size:14px;display:block}
+.item small{color:var(--cinza);font-variant-numeric:tabular-nums}
+.item .qtd button{width:28px;height:32px;font-size:15px}
+.item .qtd{transform:scale(.95)}
+.vazio{text-align:center;color:var(--cinza);padding:40px 10px}
+.dr-foot{padding:18px 22px;border-top:1px solid var(--linha);display:grid;gap:12px;background:var(--branco)}
+.linha-tot{display:flex;justify-content:space-between;font-variant-numeric:tabular-nums}
+.linha-tot.total{font-family:var(--ff-tit);font-weight:700;font-size:20px}
+.cupom{display:flex;gap:8px}
+.cupom input{flex:1;min-width:0;border:1px solid var(--linha);border-radius:999px;padding:10px 16px;font:inherit;font-size:14px;background:var(--creme);color:var(--preto)}
+.cupom button{border:0;border-radius:999px;padding:0 16px;background:var(--verde-claro);color:var(--verde-esc);font-weight:700;font-size:13px}
+.cupom-msg{font-size:12px;color:var(--verde-esc);min-height:1em}
+/* upsell no carrinho */
+.upsell{margin:4px 0 0;padding:14px;border-radius:12px;background:var(--verde-claro);box-shadow:inset 0 0 0 1.5px var(--verde);display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:center}
+.upsell img{width:64px;height:70px;object-fit:cover;border-radius:6px}
+.upsell .up-tag{font-family:var(--ff-tit);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--verde-esc)}
+.upsell b{display:block;font-family:var(--ff-tit);font-size:14px;line-height:1.3;margin:2px 0}
+.upsell small{display:block;color:var(--verde-esc);font-size:12px;font-variant-numeric:tabular-nums}
+.upsell small s{color:var(--cinza)}
+.upsell button{grid-column:1/-1;border:0;border-radius:999px;padding:11px;background:var(--verde-esc);color:var(--branco);font-family:var(--ff-tit);font-weight:600;font-size:13px}
+.upsell button:hover{background:var(--verde-prof)}
+
+/* pressel primeira compra */
+.pop-veu{position:fixed;inset:0;z-index:100;background:rgba(20,40,36,.6);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));opacity:0;pointer-events:none;transition:opacity .3s}
+.pop-veu.on{opacity:1;pointer-events:auto}
+.pop{position:relative;width:min(760px,100%);max-height:100%;overflow:auto;display:grid;grid-template-columns:1fr 1.1fr;background:var(--creme);border-radius:18px;transform:translateY(16px) scale(.98);transition:transform .35s}
+.pop-veu.on .pop{transform:none}
+.pop-img{position:relative;background:var(--verde-prof);min-height:220px}
+.pop-img img{width:100%;height:100%;object-fit:cover;opacity:.92}
+.pop-selo{position:absolute;left:18px;bottom:18px;background:var(--verde);color:var(--branco);border-radius:14px;padding:10px 16px;font-family:var(--ff-tit);line-height:1}
+.pop-selo b{font-size:44px;font-weight:700;display:block}
+.pop-selo span{font-size:12px;font-weight:600;letter-spacing:.14em}
+.pop-txt{padding:36px 32px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.pop-txt h2{font-size:clamp(24px,3vw,32px)}
+.pop-txt h2 em{font-style:normal;color:var(--verde)}
+.pop-txt p{color:var(--cinza);font-size:15px}
+.pop-form{display:grid;gap:10px}
+.pop-form input{border:1px solid var(--linha);border-radius:999px;padding:13px 18px;font:inherit;background:var(--branco);color:var(--preto);min-width:0}
+.pop-cupom{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1.5px dashed var(--verde-esc);border-radius:12px;padding:12px 14px;background:var(--branco)}
+.pop-cupom code{font-family:var(--ff-tit);font-weight:700;font-size:18px;letter-spacing:.08em;color:var(--verde-esc)}
+.pop-cupom button{border:0;background:var(--verde-claro);color:var(--verde-esc);border-radius:999px;padding:8px 14px;font-weight:700;font-size:12px}
+.pop-nao{border:0;background:none;color:var(--cinza);font-size:13px;text-decoration:underline;text-underline-offset:3px;justify-self:center}
+.pop-x{position:absolute;top:10px;right:10px;z-index:2;width:36px;height:36px;border-radius:50%;border:0;background:rgba(247,246,242,.9);color:var(--preto);font-size:22px;line-height:1}
+.pop-mini{font-size:11px;color:var(--cinza)}
+.aba-10{position:fixed;left:0;bottom:calc(110px + env(safe-area-inset-bottom,0px));z-index:40;border:0;background:var(--verde-esc);color:var(--creme);font-family:var(--ff-tit);font-weight:700;font-size:13px;letter-spacing:.06em;padding:12px 14px 12px calc(12px + env(safe-area-inset-left,0px));border-radius:0 12px 12px 0;box-shadow:0 10px 24px -10px rgba(0,0,0,.4)}
+.aba-10 span{color:var(--verde)}
+@media (max-width:640px){.pop{grid-template-columns:1fr}.pop-img{min-height:0;aspect-ratio:16/8}.pop-txt{padding:24px 20px}.pop-selo{padding:8px 12px}.pop-selo b{font-size:34px}}
+
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--preto);color:var(--creme);padding:12px 20px;border-radius:999px;font-size:14px;opacity:0;transition:.3s;z-index:90;pointer-events:none;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+
+
+<div class="aviso"><div class="wrap"><b>ESTÁ ACABANDO!</b><span class="cd" id="cd" role="timer"></span><span class="aviso-txt">ÚLTIMAS HORAS PARA APROVEITAR</span><a class="aviso-link" href="#produtos">VER OFERTAS →</a></div></div>
+
+<header>
+  <div class="wrap">
+    <a class="logo" href="#topo" aria-label="Morbach Life, início"><img src="img/logo-h.png" alt="Morbach Life"></a>
+    <nav class="menu" aria-label="Principal">
+      <a href="#produtos">Produtos</a>
+      <a href="#objetivo">Objetivos</a>
+      <a href="#kit">Kit</a>
+      <a href="#ciencia">A marca</a>
+      <a href="#duvidas">Dúvidas</a>
+    </nav>
+    <div class="acoes">
+      <a class="ico-btn" href="#duvidas" style="text-decoration:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg><span class="txt">Rastrear</span></a>
+      <button class="ico-btn" id="abrirCarrinho" aria-label="Abrir carrinho"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 7h14l-1.2 12H6.2z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg><span class="txt">Carrinho</span><span class="badge" id="contador">0</span></button>
+    </div>
+  </div>
+</header>
+
+<main id="topo">
+<section class="banners" id="banners" role="region" aria-roledescription="carrossel" aria-label="Ofertas em destaque">
+  <div class="ban-vp">
+    <div class="ban-trilho" id="banTrilho">
+      <div class="slide" role="group" aria-roledescription="slide" aria-label="1 de 4"><a href="#produtos" draggable="false"><picture><source media="(max-width:640px)" srcset="img/banners/oferta-mobile.jpg"><img src="img/banners/oferta-desktop.jpg" alt="Seu primeiro pedido com frete grátis para todo o Brasil" width="1680" height="638" draggable="false" onerror="this.closest('.slide').classList.add('sem')"></picture><span class="ph">Seu primeiro pedido com frete grátis para todo o Brasil</span></a></div>
+      <div class="slide" role="group" aria-roledescription="slide" aria-label="2 de 4"><a href="#detalhes" draggable="false"><picture><source media="(max-width:640px)" srcset="img/banners/lancamento-mobile.jpg"><img src="img/banners/lancamento-desktop.jpg" alt="O poder da natureza em sua rotina: LIFEartix e LIFEox" width="1680" height="638" draggable="false" onerror="this.closest('.slide').classList.add('sem')"></picture><span class="ph">O poder da natureza em sua rotina: LIFEartix e LIFEox</span></a></div>
+      <div class="slide" role="group" aria-roledescription="slide" aria-label="3 de 4"><a href="#kit" draggable="false"><picture><source media="(max-width:640px)" srcset="img/banners/kit-mobile.jpg"><img src="img/banners/kit-desktop.jpg" alt="Suplementos naturais para uma vida mais saudável" width="1680" height="638" draggable="false" onerror="this.closest('.slide').classList.add('sem')"></picture><span class="ph">Suplementos naturais para uma vida mais saudável</span></a></div>
+      <div class="slide" role="group" aria-roledescription="slide" aria-label="4 de 4"><a href="#" data-pop draggable="false"><picture><source media="(max-width:640px)" srcset="img/banners/primeira-mobile.jpg"><img src="img/banners/primeira-desktop.jpg" alt="Primeira compra com 10% OFF: use o cupom PRIMEIRACOMPRA" width="1680" height="638" draggable="false" onerror="this.closest('.slide').classList.add('sem')"></picture><span class="ph">Primeira compra com 10% OFF: use o cupom PRIMEIRACOMPRA</span></a></div>
+    </div>
+    <div class="ban-ui">
+      <div class="ban-faixa">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg>Pague em até 6x sem juros</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>Frete grátis acima de R$ 199</span>
+      </div>
+      <div class="ban-setas">
+        <button type="button" id="banAnt" aria-label="Banner anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button type="button" id="banProx" aria-label="Próximo banner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="ban-dots" id="banDots"></div>
+</section>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Suplementos alimentares em cápsulas</span>
+      <h1>A união entre <em>ciência e natureza</em> para transformar vidas.</h1>
+      <p class="lead">Fórmulas objetivas, com ativos escolhidos a dedo para o seu dia a dia. Duas linhas para começar: articulações e defesa antioxidante.</p>
+      <div class="ctas">
+        <a class="btn btn-pri" href="#produtos">Conhecer os produtos</a>
+        <a class="btn btn-sec" href="#kit">Ver kit com desconto</a>
+      </div>
+      <div class="lema"><span>SAÚDE</span><span>CIÊNCIA</span><span>VIDA</span></div>
+    </div>
+    <div class="hero-foto"><img src="img/hero.jpg" alt="Frascos de LIFEartix e LIFEox, da Morbach Life" width="1448" height="1086"></div>
+  </div>
+</section>
+
+<section class="vantagens" aria-label="Vantagens de compra">
+  <div class="wrap">
+    <div class="vant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg><div><b>Frete grátis</b><small>acima de R$ 199</small></div></div>
+    <div class="vant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l3 3-3 3-3-3zM12 15l3 3-3 3-3-3zM6 9l3 3-3 3-3-3zM18 9l3 3-3 3-3-3z"/></svg><div><b>5% OFF no PIX</b><small>desconto automático</small></div></div>
+    <div class="vant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 15h4"/></svg><div><b>Até 6x sem juros</b><small>no cartão de crédito</small></div></div>
+    <div class="vant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><b>Envio em 1 dia útil</b><small>direto da fábrica</small></div></div>
+  </div>
+</section>
+
+<section id="objetivo">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="eyebrow">Comece pelo que importa</span><h2>Qual o seu objetivo?</h2></div>
+    </div>
+    <div class="objetivos" role="group" aria-label="Filtrar por objetivo">
+      <button class="obj" data-alvo="artix" aria-pressed="false" id="obj-art"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 3v6a4 4 0 0 0 8 0V3M8 21v-6a4 4 0 0 1 8 0v6"/></svg><b>Articulações</b><small>Colágeno tipo II com vitamina D3</small></button>
+      <button class="obj" data-alvo="ox" aria-pressed="false" id="obj-ox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z"/></svg><b>Imunidade</b><small>Vitaminas C e E, zinco e selênio</small></button>
+      <button class="obj" data-alvo="ox" aria-pressed="false" id="obj-anti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19c0-8 6-14 14-14 0 8-6 14-14 14zM5 19l7-7"/></svg><b>Antioxidante</b><small>Proteção contra radicais livres</small></button>
+      <button class="obj" data-alvo="kit" aria-pressed="false" id="obj-kit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M12 8v12M3 12h18M8 8c-2-3 2-5 4 0 2-5 6-3 4 0"/></svg><b>Cuidado completo</b><small>Os dois juntos, com desconto</small></button>
+    </div>
+
+    <div class="vitrine" id="produtos">
+      <article class="card" data-id="artix">
+        <div class="card-img"><span class="selo">Lançamento</span><img src="img/lifeartix.jpg" alt="Frasco LIFEartix"></div>
+        <div class="card-body">
+          <h3>LIFEartix</h3>
+          <p class="formula">Colágeno tipo II + Vitamina D3</p>
+          <p class="desc">Para quem quer cuidar das articulações e dos ossos com uma fórmula direta, em cápsulas.</p>
+          <div class="tags"><span class="tag">60 cápsulas</span><span class="tag">Produto natural</span></div>
+          <div class="preco"><s>R$ 149,90</s><div class="por">R$ 119,90 <span class="off">20% OFF</span></div><small>ou 6x de R$ 19,98 sem juros · <span class="pix">R$ 113,90 no PIX</span></small></div>
+          <div class="qtd-row">
+            <div class="qtd"><button aria-label="Diminuir" data-q="-1">−</button><output id="q-artix">1</output><button aria-label="Aumentar" data-q="1">+</button></div>
+            <button class="btn btn-pri" data-add="artix">Adicionar</button>
+          </div>
+          <a class="link-det" href="#detalhes" data-tab="artix">Ver composição e modo de uso</a>
+        </div>
+      </article>
+
+      <article class="card" data-id="ox">
+        <div class="card-img"><span class="selo">Lançamento</span><img src="img/lifeox.jpg" alt="Frasco LIFEox"></div>
+        <div class="card-body">
+          <h3>LIFEox</h3>
+          <p class="formula">Vitamina C + Vitamina E + Zinco + Selênio</p>
+          <p class="desc">Quatro nutrientes antioxidantes em uma cápsula, para a defesa do organismo todos os dias.</p>
+          <div class="tags"><span class="tag">60 cápsulas</span><span class="tag">Produto natural</span></div>
+          <div class="preco"><s>R$ 129,90</s><div class="por">R$ 99,90 <span class="off">23% OFF</span></div><small>ou 6x de R$ 16,65 sem juros · <span class="pix">R$ 94,90 no PIX</span></small></div>
+          <div class="qtd-row">
+            <div class="qtd"><button aria-label="Diminuir" data-q="-1">−</button><output id="q-ox">1</output><button aria-label="Aumentar" data-q="1">+</button></div>
+            <button class="btn btn-pri" data-add="ox">Adicionar</button>
+          </div>
+          <a class="link-det" href="#detalhes" data-tab="ox">Ver composição e modo de uso</a>
+        </div>
+      </article>
+
+      <article class="card kit" data-id="kit" id="kit">
+        <div class="card-img"><span class="selo esc">Mais econômico</span><img src="img/hero.jpg" alt="Kit com LIFEartix e LIFEox" style="object-position:center"><span class="kit-badge">Economize R$ 40</span></div>
+        <div class="card-body">
+          <h3>Kit Cuidado Completo</h3>
+          <p class="formula">LIFEartix + LIFEox</p>
+          <p class="desc">Articulações e defesa antioxidante na mesma rotina. Já entra no frete grátis.</p>
+          <div class="tags"><span class="tag">2 frascos</span><span class="tag">120 cápsulas</span></div>
+          <div class="preco"><s>R$ 219,80</s><div class="por">R$ 179,80 <span class="off">18% OFF</span></div><small>ou 6x de R$ 29,97 sem juros · <span class="pix">R$ 170,81 no PIX</span></small></div>
+          <div class="qtd-row">
+            <div class="qtd"><button aria-label="Diminuir" data-q="-1">−</button><output id="q-kit">1</output><button aria-label="Aumentar" data-q="1">+</button></div>
+            <button class="btn btn-pri" data-add="kit">Adicionar</button>
+          </div>
+          <span class="link-det" style="text-decoration:none">Frete grátis incluso</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="detalhe" id="detalhes">
+  <div class="wrap">
+    <div class="tabs" role="tablist" aria-label="Produto">
+      <button role="tab" id="tab-artix" aria-selected="true" data-tab="artix">LIFEartix</button>
+      <button role="tab" id="tab-ox" aria-selected="false" data-tab="ox">LIFEox</button>
+    </div>
+
+    <div class="det-grid" data-painel="artix">
+      <div class="det-foto"><img src="img/lifeartix.jpg" alt="LIFEartix"></div>
+      <div class="det-info">
+        <span class="eyebrow">Articulações e ossos</span>
+        <h3>LIFEartix</h3>
+        <p>Colágeno tipo II combinado com vitamina D3. Uma fórmula curta, pensada para quem leva a sério a saúde das articulações e a mobilidade no dia a dia.</p>
+        <div class="ativos">
+          <div class="ativo"><b>Colágeno tipo II</b><span>Proteína presente na cartilagem das articulações.</span></div>
+          <div class="ativo"><b>Vitamina D3</b><span>Auxilia na formação e manutenção de ossos e dentes.</span></div>
+        </div>
+        <div class="det-meta">
+          <div><small>Conteúdo</small><b>60 cápsulas</b></div>
+          <div><small>Duração</small><b>30 a 60 dias</b></div>
+          <div><small>Modo de uso</small><b>Conforme rótulo</b></div>
+        </div>
+        <p class="aviso-legal">Este produto não é um medicamento. Não substitui uma alimentação equilibrada e hábitos de vida saudáveis. Gestantes, lactantes e crianças só devem consumir sob orientação profissional.</p>
+      </div>
+    </div>
+
+    <div class="det-grid" data-painel="ox" hidden>
+      <div class="det-foto"><img src="img/lifeox.jpg" alt="LIFEox"></div>
+      <div class="det-info">
+        <span class="eyebrow">Imunidade e antioxidante</span>
+        <h3>LIFEox</h3>
+        <p>Vitamina C, vitamina E, zinco e selênio em uma única cápsula. Os quatro nutrientes atuam juntos na defesa do organismo contra os radicais livres.</p>
+        <div class="ativos">
+          <div class="ativo"><b>Vitamina C</b><span>Auxilia na proteção dos danos causados pelos radicais livres.</span></div>
+          <div class="ativo"><b>Vitamina E</b><span>Antioxidante que protege as células.</span></div>
+          <div class="ativo"><b>Zinco</b><span>Auxilia no funcionamento do sistema imune.</span></div>
+          <div class="ativo"><b>Selênio</b><span>Auxilia na proteção dos danos causados pelos radicais livres.</span></div>
+        </div>
+        <div class="det-meta">
+          <div><small>Conteúdo</small><b>60 cápsulas</b></div>
+          <div><small>Duração</small><b>30 a 60 dias</b></div>
+          <div><small>Modo de uso</small><b>Conforme rótulo</b></div>
+        </div>
+        <p class="aviso-legal">Este produto não é um medicamento. Não substitui uma alimentação equilibrada e hábitos de vida saudáveis. Gestantes, lactantes e crianças só devem consumir sob orientação profissional.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ciencia" id="ciencia">
+  <div class="wrap">
+    <div class="ciencia-grid">
+      <div>
+        <span class="eyebrow">Sobre a Morbach Life</span>
+        <h2>Saúde, ciência e vida no mesmo símbolo.</h2>
+        <p>O nosso M nasce de três ideias: a inicial da família, a folha que representa vida e natureza, e a hélice de DNA que representa a ciência. É assim que desenvolvemos cada fórmula: ativos de origem natural, escolhidos com critério técnico, e nada além do necessário.</p>
+      </div>
+      <div class="equacao" aria-label="Letra M mais folha mais DNA">
+        <div class="el"><svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="3"><path d="M10 42V10l16 20 16-20v32"/></svg>Letra M</div>
+        <span class="op">+</span>
+        <div class="el"><svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 42C12 22 24 10 42 10c0 20-12 32-30 32zM12 42l18-18"/></svg>Vida</div>
+        <span class="op">+</span>
+        <div class="el"><svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6c0 12 16 14 16 20s-16 8-16 20M34 6c0 12-16 14-16 20s16 8 16 20M20 14h12M20 38h12M22 22h8M22 30h8"/></svg>Ciência</div>
+      </div>
+    </div>
+    <div class="pilares">
+      <div class="pilar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19c0-8 6-14 14-14 0 8-6 14-14 14zM5 19l7-7"/></svg><b>Natural e consciente</b></div>
+      <div class="pilar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 3h6M10 3v6L5 19a1.5 1.5 0 0 0 1.3 2h11.4a1.5 1.5 0 0 0 1.3-2L14 9V3"/></svg><b>Científica e confiável</b></div>
+      <div class="pilar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg><b>Feita para transformar vidas</b></div>
+      <div class="pilar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.5 4.5-6.5 8-6.5s7 2 8 6.5"/></svg><b>Saúde para todos os dias</b></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Compra segura</span><h2>Qualidade que você pode conferir</h2></div></div>
+    <div class="garantias">
+      <div class="gar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg><b>Normas da ANVISA</b><p>Produtos fabricados conforme a legislação de suplementos alimentares.</p></div>
+      <div class="gar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h16M4 17h10"/></svg><b>Lote rastreável</b><p>Cada frasco tem lote e validade impressos para sua conferência.</p></div>
+      <div class="gar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg><b>Validade garantida</b><p>Enviamos sempre do estoque mais recente.</p></div>
+      <div class="gar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><b>Site oficial</b><p>Compra protegida e pagamento por PIX ou cartão.</p></div>
+    </div>
+
+    <div class="fabrica">
+      <img src="img/loja.jpg" alt="Fachada da Morbach Life">
+      <div class="fabrica-txt">
+        <span class="eyebrow" style="color:var(--verde)">Loja oficial</span>
+        <h3>Direto da Morbach Life para a sua casa</h3>
+        <ul><li>Mais segurança</li><li>Entrega mais rápida</li><li>Melhor preço</li><li>Atendimento direto</li></ul>
+        <a class="btn" href="#produtos">Ver suplementos</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="duvidas" style="padding-top:0">
+  <div class="wrap faq-grid">
+    <div>
+      <span class="eyebrow">Ajuda</span>
+      <h2 style="font-size:clamp(26px,3.4vw,38px);margin-top:8px">Dúvidas frequentes</h2>
+      <div class="atend"><b>Ainda com dúvidas?</b><p>Fale com a nossa equipe pelo WhatsApp, de segunda a sexta, das 8h às 18h.</p><a class="btn btn-pri" href="https://wa.me/5566999999999" target="_blank" rel="noopener">Falar no WhatsApp</a></div>
+    </div>
+    <div>
+      <details open><summary>Como devo tomar LIFEartix e LIFEox?</summary><p>Siga a recomendação de consumo do rótulo de cada produto. Os dois podem fazer parte da mesma rotina. Se você usa medicamentos ou tem alguma condição de saúde, converse com seu médico ou nutricionista antes.</p></details>
+      <details><summary>Em quanto tempo recebo meu pedido?</summary><p>Os pedidos são enviados em até 1 dia útil após a confirmação do pagamento. O código de rastreio chega por e-mail e WhatsApp.</p></details>
+      <details><summary>Quais as formas de pagamento?</summary><p>PIX com 5% de desconto automático ou cartão de crédito em até 6x sem juros.</p></details>
+      <details><summary>Os produtos são confiáveis?</summary><p>Sim. As fórmulas seguem as normas da ANVISA para suplementos alimentares, com lote e validade rastreáveis em cada frasco.</p></details>
+      <details><summary>Tem cupom de desconto?</summary><p>Na primeira compra, use o cupom PRIMEIRACOMPRA para 10% OFF. Cadastre seu e-mail abaixo para receber as próximas ofertas.</p></details>
+      <details><summary>Posso trocar ou devolver?</summary><p>Você tem até 7 dias após o recebimento para solicitar a devolução, conforme o Código de Defesa do Consumidor.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="news">
+  <div class="wrap">
+    <div><h3>Ganhe 10% na primeira compra</h3><p>Receba conteúdos sobre saúde e ofertas exclusivas.</p></div>
+    <form id="newsForm">
+      <label for="email" class="sr" style="position:absolute;left:-9999px">Seu e-mail</label>
+      <input id="email" type="email" required placeholder="Seu melhor e-mail">
+      <button class="btn" type="submit">Quero o cupom</button>
+      <p class="ok" id="newsOk" hidden>Pronto! Seu cupom é PRIMEIRACOMPRA.</p>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><img class="foot-logo" src="img/logo-neg.png" alt="Morbach Life"><p style="margin-top:14px;max-width:32ch">A união entre ciência e natureza para transformar vidas.</p></div>
+      <div><h4>Produtos</h4><ul><li><a href="#produtos">LIFEartix</a></li><li><a href="#produtos">LIFEox</a></li><li><a href="#kit">Kit Cuidado Completo</a></li></ul></div>
+      <div><h4>Institucional</h4><ul><li><a href="#ciencia">Sobre a marca</a></li><li><a href="#duvidas">Dúvidas frequentes</a></li><li><a href="#duvidas">Rastrear pedido</a></li><li><a href="#">Seja revendedor</a></li></ul></div>
+      <div><h4>Políticas</h4><ul><li><a href="#">Privacidade</a></li><li><a href="#">Frete e entrega</a></li><li><a href="#">Trocas e devoluções</a></li><li><a href="#">Termos de uso</a></li></ul></div>
+    </div>
+    <div class="foot-base">
+      <span>Morbach Life · CNPJ 00.000.000/0001-00 · Todos os direitos reservados</span>
+      <div class="pagto"><span>PIX</span><span>VISA</span><span>MASTER</span><span>ELO</span><span>AMEX</span></div>
+    </div>
+  </div>
+</footer>
+
+<a class="wpp" href="https://wa.me/5566999999999" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.4 5 5.2-1.4A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.4-.7-2.8-1.1-4.6-4-4.8-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.2.1.6-.1 1.2z"/></svg></a>
+
+<div class="veu" id="veu"></div>
+<aside class="drawer" id="drawer" aria-label="Carrinho">
+  <div class="dr-head"><h3>Seu carrinho</h3><button class="fechar" id="fechar" aria-label="Fechar carrinho">×</button></div>
+  <div class="frete"><span id="freteTxt">Faltam R$ 199,00 para o frete grátis</span><div class="barra"><i id="barra"></i></div></div>
+  <div class="itens" id="itens"></div>
+  <div style="padding:0 22px 12px" id="upsellBox"></div>
+  <div class="dr-foot">
+    <div class="cupom"><input id="cupom" placeholder="Cupom de desconto"><button id="aplicar">Aplicar</button></div>
+    <div class="cupom-msg" id="cupomMsg"></div>
+    <div class="linha-tot"><span>Subtotal</span><span id="sub">R$ 0,00</span></div>
+    <div class="linha-tot" id="linhaDesc" hidden><span>Desconto</span><span id="desc">− R$ 0,00</span></div>
+    <div class="linha-tot total"><span>Total</span><span id="tot">R$ 0,00</span></div>
+    <small style="color:var(--cinza);margin-top:-6px" id="pixTot">ou R$ 0,00 no PIX</small>
+    <button class="btn btn-pri" id="finalizar">Finalizar compra</button>
+  </div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<button class="aba-10" id="aba10" hidden><span>10%</span> OFF</button>
+
+<div class="pop-veu" id="popVeu" role="dialog" aria-modal="true" aria-labelledby="popTit">
+  <div class="pop">
+    <button class="pop-x" id="popX" aria-label="Fechar">×</button>
+    <div class="pop-img">
+      <img src="img/hero.jpg" alt="LIFEartix e LIFEox">
+      <div class="pop-selo"><b>10%</b><span>OFF</span></div>
+    </div>
+    <div class="pop-txt">
+      <span class="eyebrow">Primeira compra</span>
+      <h2 id="popTit">Comece sua rotina com <em>10% de desconto</em></h2>
+      <p>Cadastre seu e-mail e libere o cupom para o seu primeiro pedido. Vale para LIFEartix, LIFEox e para o kit.</p>
+      <form class="pop-form" id="popForm">
+        <label for="popEmail" style="position:absolute;left:-9999px">Seu e-mail</label>
+        <input id="popEmail" type="email" required placeholder="Seu melhor e-mail">
+        <button class="btn btn-pri" type="submit">Liberar meu cupom</button>
+      </form>
+      <div id="popCupom" hidden style="display:grid;gap:10px">
+        <div class="pop-cupom"><code id="popCode">PRIMEIRACOMPRA</code><button id="copiar">Copiar</button></div>
+        <button class="btn btn-pri" id="popUsar">Aplicar e ver produtos</button>
+      </div>
+      <button class="pop-nao" id="popNao">Agora não</button>
+      <span class="pop-mini">Válido para o primeiro pedido. Não cumulativo com outros cupons.</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const P={
+    artix:{n:'LIFEartix',p:119.90,img:'img/lifeartix.jpg'},
+    ox:{n:'LIFEox',p:99.90,img:'img/lifeox.jpg'},
+    kit:{n:'Kit Cuidado Completo',p:179.80,img:'img/hero.jpg'}
+  };
+  const FRETE=199, brl=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+  let cart={}, cupomOk=false;
+  try{const s=JSON.parse(localStorage.getItem('ml_cart')||'{}'); if(s&&typeof s==='object')cart=s;}catch(e){}
+  const save=()=>{try{localStorage.setItem('ml_cart',JSON.stringify(cart))}catch(e){}};
+  const $=id=>document.getElementById(id);
+
+  // contador da oferta diária: conta até 23:59:59 e recomeça à meia-noite
+  function relogio(){
+    const a=new Date(),f=new Date(a); f.setHours(24,0,0,0);
+    const s=Math.floor((f-a)/1000), p=[s/3600,s%3600/60,s%60].map(v=>String(Math.floor(v)).padStart(2,'0'));
+    $('cd').innerHTML=p.map(v=>[...v].map(d=>'<i>'+d+'</i>').join('')).join('<em>:</em>');
+    $('cd').setAttribute('aria-label',p.join(':')+' restantes');
+  }
+  relogio(); setInterval(relogio,1000);
+
+  // quantidade nos cards
+  document.querySelectorAll('.card .qtd').forEach(q=>{
+    const o=q.querySelector('output');
+    q.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{o.value=o.textContent=Math.max(1,(+o.textContent)+(+b.dataset.q))}));
+  });
+  document.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()=>{
+    const id=b.dataset.add, q=+$('q-'+id).textContent;
+    cart[id]=(cart[id]||0)+q; save(); render(); abrir(); toast(P[id].n+' adicionado ao carrinho');
+  }));
+
+  function render(){
+    const ids=Object.keys(cart).filter(k=>P[k]&&cart[k]>0);
+    let sub=0,n=0; const box=$('itens'); box.innerHTML='';
+    ids.forEach(id=>{
+      sub+=P[id].p*cart[id]; n+=cart[id];
+      const el=document.createElement('div'); el.className='item';
+      el.innerHTML=`<img src="${P[id].img}" alt=""><div><b>${P[id].n}</b><small>${brl(P[id].p)} cada</small></div><div class="qtd"><button aria-label="Diminuir">−</button><output>${cart[id]}</output><button aria-label="Aumentar">+</button></div>`;
+      const [m,p]=el.querySelectorAll('button');
+      m.onclick=()=>{cart[id]--; if(cart[id]<=0)delete cart[id]; save(); render()};
+      p.onclick=()=>{cart[id]++; save(); render()};
+      box.appendChild(el);
+    });
+    if(!ids.length) box.innerHTML='<p class="vazio">Seu carrinho está vazio.<br>Escolha um produto para começar.</p>';
+    const d=cupomOk?sub*0.10:0, tot=sub-d;
+    $('contador').textContent=n;
+    $('sub').textContent=brl(sub);
+    $('linhaDesc').hidden=!d; $('desc').textContent='− '+brl(d);
+    $('tot').textContent=brl(tot);
+    $('pixTot').textContent='ou '+brl(tot*0.95)+' no PIX';
+    upsell();
+    const falta=FRETE-tot;
+    $('freteTxt').innerHTML=falta>0?`Faltam <b>${brl(falta)}</b> para o frete grátis`:'<b>Você ganhou frete grátis!</b>';
+    $('barra').style.width=Math.min(100,tot/FRETE*100)+'%';
+  }
+  // produto relacionado com melhor preço
+  function upsell(){
+    const box=$('upsellBox'), a=cart.artix||0, o=cart.ox||0;
+    const econ=P.artix.p+P.ox.p-P.kit.p;
+    let h='', acao=null;
+    if(a&&o){
+      const par=Math.min(a,o);
+      h=`<span class="up-tag">Melhor preço</span><b>Troque por ${par>1?par+' Kits':'Kit'} Cuidado Completo</b><small>Mesmos produtos, economia de ${brl(econ*par)}</small>`;
+      acao=()=>{cart.artix-=par;cart.ox-=par;cart.kit=(cart.kit||0)+par;['artix','ox'].forEach(k=>{if(cart[k]<=0)delete cart[k]})};
+    }else if(a||o){
+      const tem=a?'artix':'ox', falta=a?'ox':'artix', extra=P.kit.p-P[tem].p;
+      h=`<span class="up-tag">Compre junto e economize</span><b>Leve ${P[falta].n} no Kit por + ${brl(extra)}</b><small><s>${brl(P[falta].p)}</s> · você economiza ${brl(econ)}</small>`;
+      acao=()=>{cart[tem]--;if(cart[tem]<=0)delete cart[tem];cart.kit=(cart.kit||0)+1};
+    }
+    if(!acao){box.innerHTML='';return}
+    box.innerHTML=`<div class="upsell"><img src="${P.kit.img}" alt="">
+      <div>${h}</div><button id="upBtn">${a&&o?'Trocar pelo kit':'Adicionar ao kit'}</button></div>`;
+    $('upBtn').onclick=()=>{acao();save();render();toast('Kit aplicado. Você economizou '+brl(econ))};
+  }
+
+  function abrir(){$('drawer').classList.add('on');$('veu').classList.add('on')}
+  function fechar(){$('drawer').classList.remove('on');$('veu').classList.remove('on')}
+  $('abrirCarrinho').onclick=abrir; $('fechar').onclick=fechar; $('veu').onclick=fechar;
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')fechar()});
+  function aplicarCupom(c){
+    cupomOk=c==='PRIMEIRACOMPRA';
+    $('cupom').value=c;
+    $('cupomMsg').textContent=cupomOk?'Cupom aplicado: 10% OFF':(c?'Cupom inválido. Confira a digitação.':'');
+    try{localStorage.setItem('ml_cupom',cupomOk?c:'')}catch(e){}
+    if(cupomOk)$('aba10').hidden=true;
+    render();
+  }
+  $('aplicar').onclick=()=>aplicarCupom($('cupom').value.trim().toUpperCase());
+  try{const c=localStorage.getItem('ml_cupom'); if(c)aplicarCupom(c)}catch(e){}
+
+  // pressel primeira compra
+  const pv=$('popVeu');
+  let visto=false; try{visto=localStorage.getItem('ml_pop')==='1'}catch(e){}
+  function abrirPop(){pv.classList.add('on');$('aba10').hidden=true;setTimeout(()=>{const i=$('popEmail');if(!$('popForm').hidden)i.focus()},300)}
+  function fecharPop(){
+    pv.classList.remove('on');
+    try{localStorage.setItem('ml_pop','1')}catch(e){}
+    visto=true;
+    if(!cupomOk)$('aba10').hidden=false;
+  }
+  $('popX').onclick=fecharPop; $('popNao').onclick=fecharPop;
+  pv.addEventListener('click',e=>{if(e.target===pv)fecharPop()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&pv.classList.contains('on'))fecharPop()});
+  $('aba10').onclick=abrirPop;
+  $('popForm').addEventListener('submit',e=>{e.preventDefault();$('popForm').hidden=true;$('popCupom').hidden=false;$('popNao').hidden=true});
+  $('copiar').onclick=()=>{
+    const t='PRIMEIRACOMPRA';
+    navigator.clipboard&&navigator.clipboard.writeText(t).then(()=>toast('Cupom copiado'),()=>sel());
+    if(!navigator.clipboard)sel();
+    function sel(){const r=document.createRange();r.selectNodeContents($('popCode'));const s=getSelection();s.removeAllRanges();s.addRange(r);toast('Cupom selecionado')}
+  };
+  $('popUsar').onclick=()=>{aplicarCupom('PRIMEIRACOMPRA');fecharPop();toast('10% OFF aplicado no carrinho');$('produtos').scrollIntoView()};
+  if(!visto){setTimeout(()=>{if(!visto)abrirPop()},2500)}
+  else if(!cupomOk){$('aba10').hidden=false}
+  document.addEventListener('mouseout',e=>{if(!visto&&!e.relatedTarget&&e.clientY<=0)abrirPop()});
+  // carrossel de banners: clones nas pontas para loop sem pulo
+  const banTr=$('banTrilho'), banDots=$('banDots'), bn=$('banners');
+  if(banTr&&banDots&&bn&&banTr.children.length>1){
+    const tr=banTr, vp=tr.parentNode, orig=[...tr.children], n=orig.length;
+    // com reduced-motion o autoplay continua, só troca o deslize por um fade curto
+    const reduz=matchMedia('(prefers-reduced-motion:reduce)').matches;
+    const clone=s=>{const c=s.cloneNode(true);c.inert=true;c.setAttribute('aria-hidden','true');['role','aria-label','aria-roledescription'].forEach(x=>c.removeAttribute(x));return c};
+    tr.prepend(clone(orig[n-1])); tr.append(clone(orig[0]));
+    let i=1, busy=false, t, seg, x0=null, arrastou=false;
+    const dots=orig.map((_,k)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Ir para o banner '+(k+1));b.onclick=()=>go(k+1);banDots.append(b);return b});
+    function pos(anim){
+      tr.classList.toggle('sem-anim',!anim); tr.style.setProperty('--i',i);
+      const r=(i-1+n)%n;
+      orig.forEach((s,k)=>s.inert=k!==r);
+      dots.forEach((d,k)=>d.setAttribute('aria-current',k===r));
+    }
+    // ao chegar num clone, salta sem animação para o slide real equivalente
+    function fix(){clearTimeout(seg);busy=false;if(i===0||i===n+1){i=i?1:n;pos(false);void tr.offsetWidth}}
+    function go(k){
+      if(busy)return;
+      if(k!==i){
+        busy=true;
+        if(reduz){tr.style.opacity=0;setTimeout(()=>{i=(k-1+n)%n+1;pos(false);tr.style.opacity=1;busy=false},300)}
+        // fallback caso o transitionend não dispare (aba em segundo plano etc.)
+        else{i=k;pos(true);clearTimeout(seg);seg=setTimeout(fix,800)}
+      }
+      start();
+    }
+    const next=()=>go(i+1);
+    function start(){clearInterval(t);t=setInterval(next,5000)}
+    function stop(){clearInterval(t)}
+    tr.addEventListener('transitionend',e=>{if(e.target===tr&&e.propertyName==='transform')fix()});
+    if($('banAnt'))$('banAnt').onclick=()=>go(i-1);
+    if($('banProx'))$('banProx').onclick=next;
+    bn.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')stop()});
+    bn.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')start()});
+    document.addEventListener('visibilitychange',()=>document.hidden?stop():start());
+    bn.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')go(i-1);else if(e.key==='ArrowRight')next();else return;e.preventDefault()});
+    vp.addEventListener('pointerdown',e=>{x0=e.clientX;arrastou=false});
+    vp.addEventListener('pointercancel',()=>x0=null);
+    vp.addEventListener('pointerup',e=>{if(x0===null)return;const dx=e.clientX-x0;x0=null;if(Math.abs(dx)>50){arrastou=true;go(dx<0?i+1:i-1)}});
+    vp.addEventListener('click',e=>{
+      if(arrastou){e.preventDefault();arrastou=false;return}
+      if(e.target.closest('[data-pop]')){e.preventDefault();abrirPop()}
+    });
+    pos(false); start();
+  }
+
+  $('finalizar').onclick=()=>toast(Object.keys(cart).length?'Aqui entra o checkout da plataforma':'Adicione um produto primeiro');
+
+  function toast(t){const el=$('toast');el.textContent=t;el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('on'),2200)}
+
+  // objetivos
+  const objs=document.querySelectorAll('.obj');
+  objs.forEach(b=>b.addEventListener('click',()=>{
+    const ativo=b.getAttribute('aria-pressed')==='true';
+    objs.forEach(o=>o.setAttribute('aria-pressed','false'));
+    document.querySelectorAll('.vitrine .card').forEach(c=>c.classList.remove('apagado'));
+    if(!ativo){
+      b.setAttribute('aria-pressed','true');
+      const alvo=b.dataset.alvo;
+      document.querySelectorAll('.vitrine .card').forEach(c=>{if(c.dataset.id!==alvo)c.classList.add('apagado')});
+      $('produtos').scrollIntoView({block:'nearest'});
+    }
+  }));
+
+  // abas detalhe
+  function aba(id){
+    document.querySelectorAll('[role=tab]').forEach(t=>t.setAttribute('aria-selected',t.dataset.tab===id));
+    document.querySelectorAll('[data-painel]').forEach(p=>p.hidden=p.dataset.painel!==id);
+  }
+  document.querySelectorAll('[role=tab]').forEach(t=>t.onclick=()=>aba(t.dataset.tab));
+  document.querySelectorAll('.link-det[data-tab]').forEach(a=>a.addEventListener('click',()=>aba(a.dataset.tab)));
+
+  $('newsForm').addEventListener('submit',e=>{e.preventDefault();$('newsOk').hidden=false;$('email').value=''});
+  render();
+})();
+</script>
+
+</body>
+</html>

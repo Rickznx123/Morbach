@@ -1,0 +1,5 @@
+# originais em PNG e arte achatada: o site só usa img/banners/*.jpg
+img/*.png
+!img/logo-h.png
+!img/logo-neg.png
+img/morbach-institucional-desktop.jpg
